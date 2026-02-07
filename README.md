@@ -12,7 +12,7 @@
 
 1. Склонируй репозиторий:
 ```bash
-git clone https://github.com/your_username/shorter.git
+git clone https://github.com/maximRRStudios/shorter.git
 cd shortener
 ```
 

@@ -1,7 +1,7 @@
 [project]
 name = "shorter"
 version = "0.1.0"
-description = "Add your description here"
+description = "Small URL shorter service"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
@@ -15,4 +15,4 @@ dependencies = [
 ]
 
 [project.urls]
-"Source Code" = "https://github.com/yourusername/shorter"
+"Source Code" = "https://github.com/maximRRStudios/shorter"
