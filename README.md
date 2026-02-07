@@ -6,7 +6,7 @@
 
 - Python >= 3.12
 - FastAPI
-- SQLite (включен в стандартную поставку Python)
+- SQLite
 
 ## Установка
 
@@ -27,6 +27,8 @@ uv sync
 ```bash
 uv run uvicorn app:app --reload
 ```
+
+После запуска можно перейти в Swagger UI: http://localhost:8000/docs
 
 ## Тестирование
 
