@@ -56,7 +56,7 @@ class UrlRepository:
         Получаем исходный URL по коороткому коду
         """
         cursor = self.conn.cursor()
-        cursor.execute("SELECT * FROM urls WHERE short_code = ?", (short_code,))
+        cursor.execute("SELECT * FROM urls WHERE short_code = :short_code", {"short_code": short_code})
         row = cursor.fetchone()
         if row:
             columns = [column[0] for column in cursor.description]
