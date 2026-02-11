@@ -1,8 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
-from app import app
-from repository import UrlRepository
-from service import UrlService
+from shorter.app import app, get_service
+from shorter.repository import UrlRepository
+from shorter.service import UrlService
 
 # Заглушка репозитория для тестирования
 @pytest.fixture(scope="function")
@@ -19,7 +19,7 @@ def test_client(test_repository):
     # Создаем сервис и передаем тестовый репозиторий
     service = UrlService(test_repository)
     app.dependency_overrides.clear()
-    app.dependency_overrides[UrlService] = lambda: service
+    app.dependency_overrides[get_service] = lambda: service
     return TestClient(app)
 
 # Тест укоротителя URL

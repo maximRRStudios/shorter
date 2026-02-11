@@ -6,7 +6,7 @@ from segno import make_qr
 from io import BytesIO
 import requests
 
-from repository import UrlRepository
+from shorter.repository import UrlRepository
 
 class UrlService:
     def __init__(self, repository: UrlRepository):
@@ -73,5 +73,4 @@ class UrlService:
             buffer.seek(0)
             return buffer.read()
         else:
-            print('asdaaaa')
             raise ValueError("Короткий код не найден")

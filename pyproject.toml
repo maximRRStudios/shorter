@@ -16,3 +16,10 @@ dependencies = [
 
 [project.urls]
 "Source Code" = "https://github.com/maximRRStudios/shorter"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["shorter*"]
+
+[tool.setuptools.package-dir]
+"" = "src"

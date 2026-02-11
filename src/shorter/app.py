@@ -1,8 +1,9 @@
 import logging
-from fastapi import FastAPI, HTTPException, Body, Response
+from pathlib import Path
+from fastapi import FastAPI, HTTPException, Body, Response, Depends
 from fastapi.responses import RedirectResponse
-from service import UrlService
-from repository import UrlRepository
+from shorter.service import UrlService
+from shorter.repository import UrlRepository
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -11,16 +12,18 @@ app = FastAPI(title="Сервис для сокращения ссылок",
               description="Простой сервис для сокращения длинных URL.",
               version="1.0.0")
 
-# Инициализируем репозиторий и сервис
-db_path = "./shorter.db"
-repository = UrlRepository(db_path)
-service = UrlService(repository)
+def get_service():
+    db_path = Path(__file__).parent.parent.parent / "data" / "shorter.db"
+    db_path.parent.mkdir(exist_ok=True)
+    repository = UrlRepository(str(db_path))
+    return UrlService(repository)
 
 @app.post("/shorten/",
           summary="Сократить URL",
           description="Преобразует длинный URL в короткий и возвращает сокращённую ссылку.",
           tags=["URL"])
-def shorten_url(long_url: str = Body(..., embed=True)):
+def shorten_url(long_url: str = Body(..., embed=True),
+                service: UrlService = Depends(get_service)):
     logger.info(f"Request received to shorten URL: {long_url}")
     try:
         short_code = service.shorten_url(long_url)
@@ -35,7 +38,7 @@ def shorten_url(long_url: str = Body(..., embed=True)):
          responses={301: {"description": "Редирект осуществлён"},
                     404: {"description": "Короткий код не найден"}},
          tags=["URL"])
-def redirect_to_long_url(short_code: str):
+def redirect_to_long_url(short_code: str, service: UrlService = Depends(get_service)):
     logger.info(f"Redirect requested for short code: {short_code}")
     try:
         original_url = service.handle_redirect(short_code)
@@ -50,7 +53,7 @@ def redirect_to_long_url(short_code: str):
          description="Генерирует QR код по короткой ссылке.",
          responses={404: {"description": "Короткий код не найден"}},
          tags=["URL"])
-def qr_code_generator(short_code: str):
+def qr_code_generator(short_code: str, service: UrlService = Depends(get_service)):
     """
     Генерирует QR-код для заданного короткого кода.
     """
@@ -58,5 +61,4 @@ def qr_code_generator(short_code: str):
         image_bytes = service.generate_qr_code(short_code)
         return Response(content=image_bytes, media_type="image/png")
     except ValueError as e:
-        print('asdaaaaaa')
         raise HTTPException(status_code=404, detail="Короткий код не найден")
