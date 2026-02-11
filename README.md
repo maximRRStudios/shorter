@@ -13,7 +13,7 @@
 1. Склонируй репозиторий:
 ```bash
 git clone https://github.com/maximRRStudios/shorter.git
-cd shortener
+cd shorter
 ```
 
 2. Установи зависимости с помощью `UV`:
@@ -25,7 +25,7 @@ uv sync
 
 Запустить приложение можно с помощью uvicorn:
 ```bash
-uv run uvicorn app:app --reload
+uv run uvicorn shorter.app:app --reload
 ```
 
 После запуска можно перейти в Swagger UI: http://localhost:8000/docs
