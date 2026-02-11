@@ -19,6 +19,7 @@ cd shorter
 2. Установи зависимости с помощью `UV`:
 ```bash
 uv sync
+uv pip install -e .
 ```
 
 ## Запуск приложения
